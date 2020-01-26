@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: test
+spec:
+  containers:
+  - image: busybox
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+    name: busybox
+    env:
+      - name: ASPNETCORE_URLS
+        value: http://*:8080
+      - name: clientid
+        valueFrom:
+          secretKeyRef:
+            name: azkv-demo-secret
+            key: clientId
+      - name: clientsecret
+        valueFrom:
+          secretKeyRef:
+            name: azkv-demo-secret
+            key: clientSecret
+      - name: keyvaultidentifier
+        valueFrom:
+          secretKeyRef:
+            name: azkv-demo-secret
+            key: keyVaultIdentifier
+  restartPolicy: Always
+
